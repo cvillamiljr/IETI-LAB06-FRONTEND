@@ -1,25 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import React from "react";
+import UserList from "./components/UserList";
+import {Component} from "react/cjs/react.production.min";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+    state = {
+        usersList: []
+    };
+
+
+    componentDidMount() {
+        fetch('https://taskplannercesar.azurewebsites.net/users')
+            .then(response => response.json())
+            .then(data => {
+                let userList = [];
+                data.forEach(function (user) {
+                    userList.push(user)
+
+                });
+
+                this.setState({usersList: userList});
+
+            });
+    }
+
+    render() {
+        return (
+            <div>
+
+                <UserList usersList={this.state.usersList}/>
+            </div>
+        );
+    }
 }
 
 export default App;
